@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.model.Account;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.*;
 
 public class AccountService {
@@ -19,12 +20,22 @@ public class AccountService {
     }
 
     public void addAccount(String accountHolderName, Double balance){
-            String accountNumber = generateAccountNumber();
-            Account account = new Account(accountNumber, accountHolderName, balance);
-            account.setBalance(balance);
-            accounts.add(account);
 
-        System.out.println("New account has been created!!!");
+            if (accountHolderName != null && accountHolderName.trim().isEmpty()) {
+                System.out.println("Account holder name cannot be empty");
+                return;
+            }
+            if (balance <= 0){
+                System.out.println("Balance must be greater than zero!");
+                return;
+            }
+                String accountNumber = generateAccountNumber();
+                Account account = new Account(accountNumber, accountHolderName, balance);
+                account.setBalance(balance);
+                accounts.add(account);
+
+                System.out.println("New account has been created!!!");
+
     }
 
     public List<Account> getAccounts(){
@@ -43,6 +54,10 @@ public class AccountService {
     public void deposit(String accountNumber, Double amount){
         Account account = getAccountByNumber(accountNumber);
         if (account != null){
+            if (amount < 0 ){
+                System.out.println("Amount cannot negative");
+                return;
+            }
             account.deposit(amount);
             System.out.println(amount+" USD deposited. New Balance is: " + account.getBalance());
         }else {
@@ -53,7 +68,10 @@ public class AccountService {
     public void withdraw(String accountNumber, Double amount){
         Account account = getAccountByNumber(accountNumber);
         if (account != null){
-            if (amount <= account.getBalance()){
+            if (amount <=0){
+                System.out.println("Invalid amount! Amount must be greater than zero");
+            }
+            if (amount > 0 && amount <= account.getBalance()){
                 account.withdraw(amount);
                 System.out.println(amount+" USD has been withdrawed. New balance is: " + account.getBalance());
             }else {
@@ -80,14 +98,25 @@ public class AccountService {
 
     public void deleteAcc(String accountNumber){
         Account account = getAccountByNumber(accountNumber);
-        if (account != null){
-            accounts.remove(account);
-            System.out.println("Account with " + accountNumber + " has been deleted");
+        if (account != null) {
+            if (deleteConfirmation()) {
+                accounts.remove(account);
+                System.out.println("Account with " + accountNumber + " has been deleted");
+            }else {
+                System.out.println("Account deletion canceled.");
+            }
         }else {
             System.out.println("Account cannot be found!!!");
         }
     }
 
+
+    public boolean deleteConfirmation(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Are you sure wou want to delete this account? (y/n): ");
+        String response = scanner.nextLine();
+        return response.equalsIgnoreCase("y");
+    }
 
 
 
