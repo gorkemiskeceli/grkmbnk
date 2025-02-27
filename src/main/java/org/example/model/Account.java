@@ -1,29 +1,22 @@
 package org.example.model;
 
+import java.util.Random;
+
 public class Account {
 
-    private Long id;
     private String accountNumber;
     private String accountHolder;
     private Double balance;
 
+
     //constructors
-    public Account(Long id, String accountNumber, String accountHolder, Double balance){
-        this.id=id;
+    public Account(String accountNumber, String accountHolder, Double balance){
         this.accountNumber=accountNumber;
         this.accountHolder=accountHolder;
-        this.balance=balance;
+        this.balance= 0.0; //0.0 at start
     }
 
     //getter setter
-    public Long getId(){
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getAccountHolder() {
         return accountHolder;
     }
@@ -45,6 +38,23 @@ public class Account {
     }
 
     public void setBalance(Double balance) {
-        this.balance = balance;
+        if (balance>=0){
+            this.balance=balance;
+        }else {
+            throw new IllegalArgumentException("Balance cannot be negative");
+        }
     }
+
+    public void deposit(Double amount){
+      if (amount > 0){
+          balance += amount;
+      }
+    }
+    public void withdraw(Double amount){
+        if (amount > 0 && amount <= balance){
+            balance -= amount;
+        }
+    }
+
+
 }
