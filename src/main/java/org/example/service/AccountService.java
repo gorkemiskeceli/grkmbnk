@@ -64,7 +64,29 @@ public class AccountService {
         }
     }
 
+    public void getAccountDetails(String accountNumber){
+        Account account = getAccountByNumber(accountNumber);
+        if (account != null){
+            System.out.println("\n--- ACCOUNT DETAILS ---");
+            System.out.println("Account Number: " + account.getAccountNumber());
+            System.out.println("Account Holder: " + account.getAccountNumber());
+            System.out.println("Balance: " + account.getBalance());
+        }else {
+            System.out.println("Account cannot be found!!!");
+        }
 
+    }
+
+
+    public void deleteAcc(String accountNumber){
+        Account account = getAccountByNumber(accountNumber);
+        if (account != null){
+            accounts.remove(account);
+            System.out.println("Account with " + accountNumber + " has been deleted");
+        }else {
+            System.out.println("Account cannot be found!!!");
+        }
+    }
 
 
 

@@ -3,7 +3,7 @@ package org.example.model;
 import java.util.Random;
 
 public class Account {
-
+    
     private String accountNumber;
     private String accountHolder;
     private Double balance;
